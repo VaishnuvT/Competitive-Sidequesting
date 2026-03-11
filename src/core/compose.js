@@ -1,4 +1,4 @@
-﻿import { BRIEFING_SLOTS } from "../config.js";
+import { BRIEFING_SLOTS } from "../config.js";
 import { chooseWhyItMatters, selectItems } from "./personalize.js";
 
 function slotConfig(slot) {
@@ -17,7 +17,7 @@ function buildLead(profile, slot, items) {
   }
 
   if (slot === "afternoon") {
-    return `Around campus, the best opportunities today are the ones that match ${profile.major.toLowerCase()} energy without asking you to scroll five different calendars.`;
+    return `Around campus, the strongest opportunities today are the ones that match ${profile.major.toLowerCase()} energy without asking you to scroll five different calendars.`;
   }
 
   return `Tonight's world brief is filtered for ${profile.interests.slice(0, 2).join(" and ")}, so the headlines land closer to student reality than generic news does.`;
@@ -33,10 +33,10 @@ function buildHeadline(slot, items) {
   }
 
   if (slot === "afternoon") {
-    return `Best campus bet: ${items[0].title}`;
+    return `Front page campus pick: ${items[0].title}`;
   }
 
-  return `Biggest signal tonight: ${items[0].title}`;
+  return `Lead world desk signal: ${items[0].title}`;
 }
 
 export function composeBriefing({ profile, slot, rankedItems, traces, sourceMode }) {
@@ -45,6 +45,10 @@ export function composeBriefing({ profile, slot, rankedItems, traces, sourceMode
     ...item,
     whyItMatters: chooseWhyItMatters(item, profile),
   }));
+  const liveTraceCount = traces.filter((trace) => trace.status === "live").length;
+  const curatedTraceCount = traces.filter((trace) => trace.status === "curated").length;
+  const fallbackTraceCount = traces.filter((trace) => trace.status === "fallback").length;
+  const fetchedAt = traces.find((trace) => trace.fetchedAt)?.fetchedAt ?? null;
 
   return {
     slot,
@@ -57,9 +61,15 @@ export function composeBriefing({ profile, slot, rankedItems, traces, sourceMode
     headline: buildHeadline(slot, selectedItems),
     items: selectedItems,
     traces,
+    liveTraceCount,
+    curatedTraceCount,
+    fallbackTraceCount,
+    fetchedAt,
     transparencyNote:
       sourceMode === "demo"
-        ? "Demo mode is using seeded content designed to feel real and be stable on stage."
-        : "Live mode is best-effort and falls back gracefully so the experience never goes blank during a demo.",
+        ? "Demo mode is blending seeded content with hand-linked public stories so the briefing feels real without getting brittle on stage."
+        : sourceMode === "hybrid"
+          ? "Hybrid mode mixes the local live proxy with an editor's desk of pinned public links and demo-safe fallbacks."
+          : "Live mode routes public feeds through the local Dirac proxy and still keeps pinned public links in the mix when they sharpen the story.",
   };
 }

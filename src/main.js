@@ -1,25 +1,74 @@
-﻿import { BRIEFING_SLOTS, DEFAULT_SOURCE_MODE } from "./config.js";
+import { BRIEFING_SLOTS, DEFAULT_SOURCE_MODE } from "./config.js";
 import { generateBriefing } from "./core/briefingEngine.js";
 import { clonePersona, PERSONAS } from "./data/personas.js";
 import { renderApp } from "./ui/render.js";
 import { speakText, stopSpeaking } from "./ui/speech.js";
 
+const STORAGE_KEY = "dirac-dispatch/v3";
 const root = document.querySelector("#app");
+
+function buildProfileFromSaved(snapshot = {}) {
+  const personaId = snapshot.activePersonaId ?? PERSONAS[0].id;
+  const base = clonePersona(personaId);
+  const savedProfile = snapshot.profile ?? {};
+
+  return {
+    ...base,
+    ...savedProfile,
+    interests: Array.isArray(savedProfile.interests) ? savedProfile.interests : base.interests,
+    liveSources: {
+      ...base.liveSources,
+      ...(savedProfile.liveSources ?? {}),
+    },
+    preferredDeliveryTimes: {
+      ...base.preferredDeliveryTimes,
+      ...(savedProfile.preferredDeliveryTimes ?? {}),
+    },
+  };
+}
+
+function loadSnapshot() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSnapshot(state) {
+  try {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        activePersonaId: state.activePersonaId,
+        sourceMode: state.sourceMode,
+        selectedSlot: state.selectedSlot,
+        profile: state.profile,
+      }),
+    );
+  } catch {
+  }
+}
+
+const snapshot = loadSnapshot();
+const initialPersonaId = snapshot?.activePersonaId ?? PERSONAS[0].id;
 
 const state = {
   personas: PERSONAS,
-  activePersonaId: PERSONAS[0].id,
-  profile: clonePersona(PERSONAS[0].id),
+  activePersonaId: initialPersonaId,
+  profile: buildProfileFromSaved(snapshot),
   briefings: {},
-  selectedSlot: BRIEFING_SLOTS[0].id,
-  sourceMode: DEFAULT_SOURCE_MODE,
-  status: "Ready to generate stable demo briefings or try public feeds in hybrid mode.",
+  selectedSlot: snapshot?.selectedSlot ?? BRIEFING_SLOTS[0].id,
+  sourceMode: snapshot?.sourceMode ?? DEFAULT_SOURCE_MODE,
+  status: "Ready to generate briefings with pinned real UT links and live public feeds through the local proxy.",
   isGenerating: false,
 };
 
 function setState(updater) {
   const nextState = typeof updater === "function" ? updater(state) : updater;
   Object.assign(state, nextState);
+  saveSnapshot(state);
   render();
 }
 
@@ -30,6 +79,22 @@ function upsertBriefing(entry) {
   };
 }
 
+function describeModeSelection(modeId) {
+  if (modeId !== "demo" && window.location.protocol === "file:") {
+    return "Live or hybrid mode selected, but you need the local server running so the /api proxy routes are available.";
+  }
+
+  if (modeId === "live") {
+    return "Live mode selected. The app will route public feeds through the local proxy and keep pinned public links in view.";
+  }
+
+  if (modeId === "hybrid") {
+    return "Hybrid mode selected. The app will mix live public feeds, pinned public stories, and demo-safe fallbacks.";
+  }
+
+  return "Demo mode selected. You are on the safest path for a polished hackathon walkthrough.";
+}
+
 async function runGeneration(slot) {
   if (state.isGenerating) {
     return;
@@ -38,7 +103,7 @@ async function runGeneration(slot) {
   setState({
     isGenerating: true,
     selectedSlot: slot,
-    status: `Generating the ${slot} briefing for ${state.profile.name} in ${state.sourceMode} mode...`,
+    status: `Generating the ${slot} edition for ${state.profile.name} in ${state.sourceMode} mode...`,
   });
 
   try {
@@ -52,7 +117,7 @@ async function runGeneration(slot) {
       isGenerating: false,
       selectedSlot: slot,
       briefings: upsertBriefing(briefing),
-      status: `${slot[0].toUpperCase()}${slot.slice(1)} briefing ready. ${briefing.transparencyNote}`,
+      status: `${slot[0].toUpperCase()}${slot.slice(1)} edition ready. ${briefing.transparencyNote}`,
     });
   } catch (error) {
     setState({
@@ -88,7 +153,7 @@ function updateProfileField(field, value) {
   setState({
     profile: nextProfile,
     briefings: {},
-    status: "Profile updated. Regenerate a briefing to see new ranking decisions.",
+    status: "Profile updated. Regenerate an edition to see the new ranking and tone decisions.",
   });
 }
 
@@ -98,7 +163,23 @@ function applyPersona(personaId) {
     profile: clonePersona(personaId),
     briefings: {},
     selectedSlot: BRIEFING_SLOTS[0].id,
-    status: "Persona swapped. The next briefing will show a noticeably different ranking profile.",
+    status: "Persona swapped. The next edition will show a noticeably different briefing mix.",
+  });
+}
+
+function resetPersona() {
+  setState({
+    profile: clonePersona(state.activePersonaId),
+    briefings: {},
+    status: "Persona reset to its seeded defaults.",
+  });
+}
+
+function clearBriefings() {
+  stopSpeaking();
+  setState({
+    briefings: {},
+    status: "Cleared generated editions.",
   });
 }
 
@@ -114,7 +195,7 @@ function render() {
       setState({
         sourceMode: button.dataset.mode,
         briefings: {},
-        status: `${button.dataset.mode} mode selected. Generate again to refresh the source trace.`,
+        status: describeModeSelection(button.dataset.mode),
       });
     });
   });
@@ -124,6 +205,8 @@ function render() {
   });
 
   root.querySelector("[data-action='generate-all']")?.addEventListener("click", runAll);
+  root.querySelector("[data-action='clear-briefings']")?.addEventListener("click", clearBriefings);
+  root.querySelector("[data-action='reset-persona']")?.addEventListener("click", resetPersona);
 
   root.querySelectorAll("[data-action='select-slot']").forEach((element) => {
     element.addEventListener("click", () => {

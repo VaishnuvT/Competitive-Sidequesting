@@ -1,0 +1,180 @@
+export const EDITORIAL_DESK = {
+  campus: [
+    {
+      id: "editorial-kxan-live",
+      title: "KXAN Investigates LIVE: The Stories Behind Our Stories",
+      summary:
+        "A same-day journalism event that gives students a direct look at how Austin investigations are reported, framed, and pushed into public view.",
+      domain: "campus",
+      startsAt: "2026-03-11T17:00:00-05:00",
+      endsAt: "2026-03-11T19:00:00-05:00",
+      location: "Hogg Memorial Auditorium",
+      tags: ["policy", "journalism", "career", "students", "civic tech"],
+      urgency: 5,
+      importance: 5,
+      source: {
+        label: "UT Events Calendar",
+        mode: "curated",
+        url: "https://calendar.utexas.edu/event/kxan-investigates-live-the-stories-behind-our-stories",
+        note: "Pinned public UT event link so the hackathon demo has credible anchor events even when feeds are noisy.",
+      },
+    },
+    {
+      id: "editorial-musical-memories",
+      title: "Musical Memories featuring Butler Opera Center Musicians",
+      summary:
+        "A midday arts event that makes the campus brief feel more like a living campus paper and less like a career-only bulletin board.",
+      domain: "campus",
+      startsAt: "2026-03-17T12:00:00-05:00",
+      location: "Butler School of Music",
+      tags: ["arts", "students", "wellness", "live music"],
+      urgency: 2,
+      importance: 3,
+      source: {
+        label: "UT Events Calendar",
+        mode: "curated",
+        url: "https://calendar.utexas.edu/event/musical-memories-featuring-butler-opera-center-musicians",
+        note: "Pinned public UT arts listing.",
+      },
+    },
+    {
+      id: "editorial-africa-conference",
+      title: "UT Austin Africa Conference 2026",
+      summary:
+        "A strong upcoming signal for students interested in research, policy, and internationally minded campus programming.",
+      domain: "campus",
+      startsAt: "2026-03-27T08:00:00-05:00",
+      tags: ["research", "policy", "students", "international"],
+      urgency: 3,
+      importance: 4,
+      source: {
+        label: "UT Events Calendar",
+        mode: "curated",
+        url: "https://calendar.utexas.edu/event/ut-austin-africa-conference-2026",
+        note: "Pinned public UT conference listing.",
+      },
+    },
+    {
+      id: "editorial-forty-acres-fest",
+      title: "Forty Acres Fest",
+      summary:
+        "A high-energy spring festival pick that helps the afternoon edition feel social and campus-wide, not just academic.",
+      domain: "campus",
+      startsAt: "2026-04-09T14:00:00-05:00",
+      tags: ["students", "social", "campus", "spring"],
+      urgency: 2,
+      importance: 3,
+      source: {
+        label: "UT Events Calendar",
+        mode: "curated",
+        url: "https://calendar.utexas.edu/event/forty_acres_fest_9226",
+        note: "Pinned public UT festival listing.",
+      },
+    },
+    {
+      id: "editorial-tsurf-deadline",
+      title: "Registration Deadline for 2026 Technology & Science Undergraduate Research Forum",
+      summary:
+        "A concrete deadline signal for students who need a push to turn coursework or lab work into a visible research story.",
+      domain: "campus",
+      displayTime: "Upcoming deadline",
+      tags: ["research", "biology", "computer science", "deadline", "students"],
+      urgency: 4,
+      importance: 4,
+      source: {
+        label: "UT Events Calendar",
+        mode: "curated",
+        url: "https://calendar.utexas.edu/event/registration-deadline-for-2026-technology-amp-science-undergraduate-research-forum",
+        note: "Pinned public UT deadline listing.",
+      },
+    },
+  ],
+  world: [
+    {
+      id: "editorial-self-driving-ambulance",
+      title: "Austin shooting raises fresh questions about self-driving cars after ambulance was blocked from victim",
+      summary:
+        "The Texas Tribune piece turns autonomous-vehicle debate into a local public-safety story, which makes it feel much more immediate for UT students in Austin.",
+      domain: "world",
+      displayTime: "Mar 9",
+      tags: ["ai", "policy", "austin", "commute", "students"],
+      urgency: 4,
+      importance: 5,
+      impact: {
+        default: "It pulls an abstract autonomy debate into Austin streets and emergency-response tradeoffs students can picture immediately.",
+        ai: "It shows why AI products in the real world are judged on safety, edge cases, and public trust, not just novelty.",
+        policy: "It is a concrete example of how city policy, public safety, and emerging tech collide in practice.",
+      },
+      source: {
+        label: "The Texas Tribune",
+        mode: "curated",
+        url: "https://www.texastribune.org/2026/03/09/texas-austin-shooting-autonomous-vehicles-self-driving-ambulance-blocked/",
+        note: "Pinned public article chosen for Austin relevance.",
+      },
+    },
+    {
+      id: "editorial-oil-refinery",
+      title: "Trump Says Texas to Get New Oil Refinery With Reliance Backing",
+      summary:
+        "An energy and industry story with obvious Texas stakes, from jobs and supply chains to the political framing around growth and fuel prices.",
+      domain: "world",
+      displayTime: "Mar 10",
+      tags: ["economy", "policy", "career", "texas", "energy"],
+      urgency: 3,
+      importance: 4,
+      impact: {
+        default: "It is the kind of national story that can quickly become a Texas jobs, cost-of-living, and industrial-policy conversation.",
+        startups: "It is a reminder that infrastructure, manufacturing, and energy policy still shape where capital and opportunity move.",
+        career: "Big industrial announcements often ripple into internships, recruiting, and local economic confidence.",
+      },
+      source: {
+        label: "Bloomberg",
+        mode: "curated",
+        url: "https://www.bloomberg.com/news/articles/2026-03-10/trump-says-us-to-get-new-oil-refinery-with-reliance-backing",
+        note: "Pinned public business headline for the evening edition.",
+      },
+    },
+    {
+      id: "editorial-iran-stockpile",
+      title: "US weighs sending forces into Iran to secure nuclear stockpile, reports say",
+      summary:
+        "The Guardian report frames a sharp escalation scenario, making the evening brief feel like a serious world desk instead of a generic trend digest.",
+      domain: "world",
+      displayTime: "Mar 10",
+      tags: ["policy", "international", "security", "research"],
+      urgency: 5,
+      importance: 5,
+      impact: {
+        default: "It is a high-stakes foreign policy signal with the kind of geopolitical risk that can reshape markets, campus discourse, and public attention fast.",
+        policy: "It is directly relevant to how power, deterrence, and escalation get discussed in classes, research, and public institutions.",
+      },
+      source: {
+        label: "The Guardian",
+        mode: "curated",
+        url: "https://www.theguardian.com/world/2026/mar/10/us-weighs-sending-forces-into-iran-to-secure-nuclear-stockpile-reports-say",
+        note: "Pinned public world story for the evening edition.",
+      },
+    },
+    {
+      id: "editorial-iran-barrages",
+      title: "Iranian barrages target Israel and Gulf countries as Hegseth warns Iran of most intense day of strikes",
+      summary:
+        "PBS NewsHour adds a second angle on the same crisis, giving the world briefing a more newspaper-like sense of developing coverage instead of one isolated article.",
+      domain: "world",
+      displayTime: "Mar 10",
+      tags: ["policy", "international", "security", "world"],
+      urgency: 5,
+      importance: 5,
+      impact: {
+        default: "It helps students understand that the story is moving fast, with regional consequences rather than a single isolated flashpoint.",
+        policy: "It is useful context for anyone tracking how conflict, alliances, and government messaging shift from hour to hour.",
+      },
+      source: {
+        label: "PBS NewsHour",
+        mode: "curated",
+        url: "https://www.pbs.org/newshour/world/iranian-barrages-target-israel-and-gulf-countries-as-hegseth-warns-iran-of-most-intense-day-of-strikes",
+        note: "Pinned public world story from PBS.",
+      },
+    },
+  ],
+};

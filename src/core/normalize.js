@@ -1,4 +1,4 @@
-﻿import { formatRelativeWindow, isoOrNull, minutesUntil } from "./date.js";
+import { formatRelativeWindow, isoOrNull, minutesUntil } from "./date.js";
 
 export function normalizeItems(items) {
   const now = new Date();
@@ -11,7 +11,7 @@ export function normalizeItems(items) {
       ...item,
       startsAt,
       dueAt,
-      timeLabel: formatRelativeWindow(startsAt ?? dueAt, now),
+      timeLabel: item.displayTime ?? formatRelativeWindow(startsAt ?? dueAt, now),
       minutesUntil: minutesUntil(startsAt ?? dueAt, now),
       tags: Array.from(new Set(item.tags ?? [])),
       searchableText: [item.title, item.summary, ...(item.tags ?? [])].join(" ").toLowerCase(),

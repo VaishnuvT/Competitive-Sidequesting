@@ -1,4 +1,4 @@
-﻿import { SLOT_LIMITS, SLOT_PRIORITIES } from "../config.js";
+import { SLOT_LIMITS, SLOT_PRIORITIES } from "../config.js";
 
 function keywordsForProfile(profile) {
   const lifestyleTokens = {
@@ -31,6 +31,16 @@ function scoreItem(item, profile, slot) {
   if (isPrimaryDomain) {
     score += 14;
     reasons.push(`Primary ${slot} domain`);
+  }
+
+  if (item.source?.mode === "live") {
+    score += 2;
+    reasons.push("Live signal");
+  }
+
+  if (item.source?.mode === "curated") {
+    score += 3;
+    reasons.push("Editor's desk pick");
   }
 
   if (isUrgentSoon) {
@@ -99,6 +109,28 @@ export function chooseWhyItMatters(item, profile) {
     }
 
     return item.impact.default;
+  }
+
+  if (item.domain === "world") {
+    if (item.tags.includes("ai")) {
+      return "It signals how quickly AI expectations are shifting toward people who can ship useful products, not just discuss the tech.";
+    }
+
+    if (item.tags.includes("biology") || item.tags.includes("research")) {
+      return "It helps connect classroom work and research interests to the bigger industries and institutions shaping them.";
+    }
+
+    if (item.tags.includes("policy")) {
+      return "It gives context for decisions that eventually affect universities, funding, and public life on campus.";
+    }
+
+    if (item.tags.includes("career") || item.tags.includes("economy") || item.tags.includes("startups")) {
+      return "It sharpens what matters for internships, recruiting, and the kinds of proof-of-work that stand out right now.";
+    }
+
+    if (item.tags.includes("climate") || item.tags.includes("commute")) {
+      return "It connects global shifts back to the logistics students actually feel in their daily routines.";
+    }
   }
 
   if (item.domain === "personal") {

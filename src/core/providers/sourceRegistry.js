@@ -1,4 +1,5 @@
-﻿import { demoProviders } from "./demoProviders.js";
+import { demoProviders } from "./demoProviders.js";
+import { editorialProviders } from "./editorialProviders.js";
 import { liveProviders } from "./liveProviders.js";
 
 function dedupe(items) {
@@ -16,14 +17,14 @@ function dedupe(items) {
 
 function providerListForMode(sourceMode) {
   if (sourceMode === "demo") {
-    return demoProviders;
+    return [...editorialProviders, ...demoProviders];
   }
 
   if (sourceMode === "hybrid") {
-    return [...liveProviders, ...demoProviders];
+    return [...editorialProviders, ...liveProviders, ...demoProviders];
   }
 
-  return liveProviders;
+  return [...editorialProviders, ...liveProviders];
 }
 
 function fallbackProviders(slot) {
