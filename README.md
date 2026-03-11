@@ -1,216 +1,208 @@
-﻿# Dirac Dispatch
+﻿# Dirac Dispatch - 3 Minute Demo Video Script
 
-Dirac Dispatch is a hackathon MVP for a UT-student personal briefing product that feels outbound-first instead of browse-first. The demo ships as a zero-dependency web app so it can run reliably this weekend without a backend, auth, or package installation.
+**OpenAI x UT Austin Codex Hackathon**
 
-## Quick start
+## 0:00 - 0:15 | Hook
 
-1. From the repo root, start the local server:
+### Speaker
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\serve.ps1 -Port 4173
-```
+UT students don't fail because they're unmotivated.  
+They fail because campus life is fragmented across too many apps.
 
-2. Open [http://localhost:4173](http://localhost:4173) in a browser.
-3. Leave the app in `Demo` mode for the safest hackathon walkthrough.
-4. Click `Morning`, `Afternoon`, `Evening`, or `Dispatch all three`.
-5. Use `Play audio` to demo the podcast-style briefing.
+Canvas for assignments.  
+Email for announcements.  
+GroupMe for orgs.  
+Handshake for recruiting.  
+Instagram for events.  
+Weather apps.  
+Calendar apps.
 
-No package install is required.
-## Recommended MVP format and stack
+Important information gets buried everywhere.
 
-The fastest, most demoable format is a lightweight web control panel that simulates outbound delivery:
+So we built Dirac Dispatch - a personalized outbound daily briefing that helps UT students stay on top of life, classes, events, and opportunities in one place.
 
-- Static HTML/CSS/JavaScript app with ES modules
-- Browser-native `SpeechSynthesis` for podcast-style playback
-- Modular source adapters for `demo`, `hybrid`, and `live` modes
-- Seeded persona and content data for a reliable demo
-- Public-feed adapters for weather, UT events RSS, world RSS, and optional public Google Calendar ICS
+### On Screen
 
-Why this stack:
+- Rapid montage of tabs: Canvas, Gmail, GroupMe, Calendar, Weather
+- Phone notifications popping up
+- Cut to Dirac Dispatch homepage
 
-- It is runnable with almost zero setup.
-- The UI can focus on message dispatch and spoken briefings instead of building a complex app shell.
-- The architecture still looks extensible enough for real integrations after the hackathon.
+## 0:15 - 0:35 | Problem + Why It Matters
 
-## Project structure
+### Speaker
 
-```text
-.
-|-- index.html
-|-- scripts/
-|   `-- serve.ps1
-|-- src/
-|   |-- config.js
-|   |-- main.js
-|   |-- data/
-|   |   |-- demoContent.js
-|   |   `-- personas.js
-|   |-- core/
-|   |   |-- briefingEngine.js
-|   |   |-- compose.js
-|   |   |-- date.js
-|   |   |-- formatters.js
-|   |   |-- normalize.js
-|   |   |-- personalize.js
-|   |   `-- providers/
-|   |       |-- demoProviders.js
-|   |       |-- liveProviders.js
-|   |       `-- sourceRegistry.js
-|   `-- ui/
-|       |-- render.js
-|       `-- speech.js
-`-- styles/
-    `-- main.css
-```
+At a university the size of University of Texas at Austin, students juggle academics, jobs, organizations, recruiting, and personal life.
 
-## Architecture and module boundaries
+The problem isn't access to information.
 
-The system is intentionally split into the same layers you would keep if this grew into a real product:
+It's information overload.
 
-1. Source adapters / ingestion
-   - `src/core/providers/demoProviders.js` returns stable seeded tasks, campus events, and world items.
-   - `src/core/providers/liveProviders.js` attempts real public feeds:
-     - Weather.gov for commute context
-     - UT Events RSS feed
-     - Public RSS feeds for world news
-     - Optional public Google Calendar ICS URL
-2. Normalization
-   - `src/core/normalize.js` converts mixed source records into one shared briefing item shape.
-3. Ranking / personalization
-   - `src/core/personalize.js` scores items by slot, urgency, interests, major, lifestyle, and stress mode.
-4. Briefing composition
-   - `src/core/compose.js` turns ranked items into a narrative briefing object with a strong opening and “why it matters”.
-5. Output formatting
-   - `src/core/formatters.js` produces:
-     - SMS-style text
-     - audio/podcast-style script
-6. Demo/live toggle
-   - `src/core/providers/sourceRegistry.js` selects providers and applies fallback logic so the demo never goes blank.
-7. Control interface
-   - `src/ui/render.js` renders the dispatch console, persona editor, SMS preview, source trace, and ranking rationale.
+Things that matter - deadlines, events, opportunities - get lost in the noise.
 
-## Exact file-by-file implementation plan
+Our solution aligns with the hackathon theme Build it Forward.
 
-1. `index.html`
-   - Minimal host page and app mount point.
-2. `styles/main.css`
-   - Outbound-first visual direction with a dispatch console, phone-style SMS shell, and cards for sources and audio.
-3. `src/config.js`
-   - Shared app constants, slot definitions, and source-mode metadata.
-4. `src/data/personas.js`
-   - Seeded demo personas and cloning helpers.
-5. `src/data/demoContent.js`
-   - Seeded fallback tasks, campus happenings, and world summaries.
-6. `src/core/date.js`
-   - Shared time helpers for schedule hydration and spoken-length estimation.
-7. `src/core/providers/demoProviders.js`
-   - Stable demo adapters for all three briefing domains.
-8. `src/core/providers/liveProviders.js`
-   - Best-effort live adapters for public RSS, weather, and optional public ICS.
-9. `src/core/providers/sourceRegistry.js`
-   - Mode selection plus live-to-demo fallback.
-10. `src/core/normalize.js`
-    - Common item shape and derived fields.
-11. `src/core/personalize.js`
-    - Ranking heuristics and “why it matters” selection.
-12. `src/core/compose.js`
-    - Narrative briefing object construction.
-13. `src/core/formatters.js`
-    - SMS and podcast-script output formatters.
-14. `src/core/briefingEngine.js`
-    - End-to-end orchestration.
-15. `src/ui/speech.js`
-    - Browser TTS wrapper.
-16. `src/ui/render.js`
-    - Demo control surface and preview rendering.
-17. `src/main.js`
-    - State management, event wiring, and generation actions.
-18. `scripts/serve.ps1`
-    - Tiny static server for local demoing without external tools.
+Dirac Dispatch is designed to reduce decision fatigue and improve day-to-day execution - something that could help students not just during college, but throughout their careers.
 
-## Setup
+### On Screen
 
-Because this is a static app, setup is intentionally tiny.
+Title card:  
+**Problem: Information Overload for UT Students**
 
-### Option 1: use the included PowerShell server
+Bullet animations:
 
-From the repo root:
+- Too many apps
+- Too many feeds
+- Too many decisions
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\serve.ps1 -Port 4173
-```
+## 0:35 - 1:10 | Product Overview
 
-Then open:
+### Speaker
 
-- [http://localhost:4173](http://localhost:4173)
+Dirac Dispatch creates short, actionable briefings throughout the day.
 
-### Option 2: open `index.html` directly
+Students can generate:
 
-That is enough for `demo` mode. A local server is recommended for `hybrid` and `live` mode because browsers handle module and network behavior more predictably over `http://`.
+- a morning briefing to start the day
+- an afternoon update to stay on track
+- and an evening reflection to close things out
 
-## Live vs demo mode
+For demo reliability, we built two modes:
 
-The UI lets you switch between three modes:
+Demo Mode, which uses curated datasets for consistent presentations,
 
-- `Demo`
-  - Uses seeded tasks, campus events, and world summaries.
-  - Best for a guaranteed on-stage demo.
-- `Hybrid`
-  - Attempts public feeds and keeps seeded content in the mix.
-  - Best for showing “real + reliable”.
-- `Live`
-  - Prefers public feeds first, then falls back if coverage is thin.
-  - Best for showing future potential and source transparency.
+and Live Mode, which pulls from real public data sources like weather, campus events, and global RSS feeds.
 
-### Live inputs supported today
+We also added audio playback, so the briefing becomes something students can listen to while commuting to campus.
 
-- Optional public Google Calendar ICS URL for personal agenda data
-- UT Events RSS feed
-- Weather.gov Austin forecast endpoint
-- Public world-news RSS feeds
+### On Screen
 
-## Demo script
+Cursor clicks:
 
-A clean 3-minute demo story:
+- Morning Briefing
+- Afternoon Briefing
+- Evening Briefing
 
-1. Open the app in `Demo` mode.
-2. Start on Maya and generate the morning briefing.
-   - Point out labs, advising, and weather/commute stress reduction.
-3. Switch to Noah and generate the afternoon briefing.
-   - Show how startup and career events rise above generic campus events.
-4. Switch to Priya and generate the evening briefing.
-   - Show policy and research weighting plus lower-noise output.
-5. Click “Dispatch all three” for one persona.
-   - Emphasize the outbound concept: three pulses, not one endless feed.
-6. Hit “Play audio”.
-   - Frame it as the podcast-style version for headphones or a smart speaker.
-7. Switch to `Hybrid` mode.
-   - Show the source trace panel explaining which items were live and which were fallbacks.
+Then:
 
-## How to explain the hard-coded parts honestly
+- Toggle Demo Mode / Live Mode
 
-The honest pitch is stronger than pretending everything is live:
+Finally:
 
-- “We optimized the MVP for demo reliability, so private student systems are mocked behind real adapter boundaries.”
-- “Public feeds like UT Events RSS and Weather.gov are already wired in.”
-- “The seeded data is not a shortcut around architecture. It is a demo-safe cache layer that lets us prove the product experience now and swap real connectors in later.”
-- “For a hackathon, reliability matters more than fragile scraping or auth-heavy integrations.”
+- Click Play Audio
 
-## Future roadmap
+## 1:10 - 1:50 | Live Walkthrough
 
-- Replace public ICS with authenticated Google Calendar integration
-- Add real assignment/deadline connectors from LMS or email parsing
-- Add delivery channels like Twilio SMS or push notifications
-- Add persistent profiles and saved notification schedules
-- Add higher-quality TTS and downloadable audio clips
-- Add smarter campus-event relevance using historical attendance and location
+### Speaker
 
-## Notes for hackathon judging
+Let's generate a morning briefing.
 
-This MVP is built to tell a strong story:
+The system prioritizes what matters right now:
 
-- Impact: students are overwhelmed by fragmented signals
-- Novelty: the product reaches out first instead of asking students to browse
-- Usefulness: three daily briefing pulses replace scattered calendars, bulletin boards, and feeds
-- Implementation: real public feeds where stable, seeded data where reliability matters
-- Future potential: the adapter boundaries make it straightforward to plug in real campus and personal systems later
+urgent tasks, relevant campus events, and contextual information like weather.
+
+The goal is not to overwhelm students with data - it's to give them a clear plan for the next few hours.
+
+Now we'll switch personas to show personalization.
+
+Different students have different priorities.
+
+An engineering student focused on recruiting might see internship deadlines or tech talks.
+
+A student involved in campus organizations might see meetings or events ranked higher.
+
+Dirac Dispatch adapts the ranking based on interests, schedule context, and urgency.
+
+And here's our Dispatch All Three feature - which simulates a full-day proactive assistant delivering morning, afternoon, and evening briefings together.
+
+Finally, we can trigger audio playback, turning the briefing into something students can listen to while walking to class.
+
+### On Screen
+
+Sequence:
+
+- Click Generate Morning Briefing
+- Scroll results
+- Open Profile / Persona Settings
+- Change persona
+- Click Regenerate
+- Click Dispatch All Three
+- Click Play Audio
+
+## 1:50 - 2:25 | Technical Architecture
+
+### Speaker
+
+Under the hood, Dirac Dispatch is built with a modular architecture designed for real-world scalability.
+
+First, source adapters collect information from demo datasets or live feeds.
+
+Then a normalization layer converts mixed data sources into a unified item format.
+
+Next, the personalization and ranking engine scores items based on urgency, schedule slot, user interests, and optional stress or focus modes.
+
+After that, the composition layer assembles a concise, readable briefing.
+
+Finally, the UI and speech layer renders the briefing visually and generates audio narration.
+
+Because each component is modular, we can easily add new data sources or delivery channels without rewriting the core system.
+
+### On Screen
+
+Quick pan through folders:
+
+- `src/core/providers`
+- `normalize.js`
+- `personalize.js`
+- `briefingEngine.js`
+- `ui/speech.js`
+
+Overlay labels:
+
+- Sources
+- Normalization
+- Ranking
+- Composition
+- UI + Audio
+
+## 2:25 - 2:45 | Codex Story (Judging Alignment)
+
+### Speaker
+
+We built Dirac Dispatch using OpenAI Codex as our development accelerator.
+
+Codex allowed us to run parallel workflows across different parts of the system.
+
+One workflow focused on the UI, another on the briefing engine, and another on the feed adapters.
+
+We used worktrees to merge those components into a clean modular architecture.
+
+Codex also helped us iterate quickly - generating boilerplate, debugging edge cases, and refactoring code - which allowed us to move from concept to working product within the hackathon timeframe.
+
+### On Screen
+
+- Terminal with commits
+- Code snippets
+- Git branches merging
+
+## 2:45 - 3:00 | Impact + Close
+
+### Speaker
+
+Dirac Dispatch isn't just a hackathon demo.
+
+It's a foundation for a persistent student assistant that reduces information overload and improves follow-through.
+
+The project demonstrates real impact, technical depth, and practical usability today.
+
+We're excited to keep building it forward.
+
+Hook 'em.
+
+### On Screen
+
+Final screen:
+
+- Dirac Dispatch
+- UT Student Briefing Assistant
+- Team Names
+- OpenAI x UT Austin Codex Hackathon
