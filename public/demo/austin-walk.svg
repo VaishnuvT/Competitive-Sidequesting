@@ -1,0 +1,13 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="600" y1="0" x2="600" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD8B2"/>
+      <stop offset="1" stop-color="#FFEBD8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="36" fill="url(#sky)"/>
+  <path d="M0 460C140 420 250 500 390 465C525 432 650 350 790 390C935 432 1060 525 1200 500V630H0V460Z" fill="#FF9A64" fill-opacity="0.45"/>
+  <path d="M0 520C170 495 300 555 465 532C620 510 760 460 920 492C1030 514 1120 560 1200 550V630H0V520Z" fill="#F7763F" fill-opacity="0.5"/>
+  <text x="118" y="178" fill="#19304E" font-size="58" font-family="Georgia, serif">Austin Walk</text>
+  <text x="118" y="248" fill="#2D4768" font-size="30" font-family="Verdana, sans-serif">Sunset, no-phone, just vibes.</text>
+</svg>
